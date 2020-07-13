@@ -43,8 +43,8 @@ function handleGetData(event) {
             cityData = data;
             console.log("Data: ", data);
             $weatherFor.html(cityData.name);
-            $temp.html(cityData.main.temp * 1.8 - 459.67);
-            $feelsLike.html(cityData.main.feels_like * 1.8 - 459.67);
+            $temp.html(Math.round(cityData.main.temp * 1.8 - 459.67));
+            $feelsLike.html(Math.round(cityData.main.feels_like * 1.8 - 459.67));
             $weather.html(cityData.weather[0].description);
         },
         (error) => {
