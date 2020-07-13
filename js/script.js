@@ -9,38 +9,49 @@ const $weather = $("#weather");
 
 const $input = $("input[type = 'text']");
 
-
-const promise = $.ajax(
-    {
-        url: 
-            "http://api.openweathermap.org/data/2.5/weather?q="
-            +
-            userInput
-            +
-            ",CA,US&APPID="
-            +
-            apiKey
-    }
-);
+/* assigning the promise variable means assigning the userInput value before the handleGetData function uses it. This causes problems.*/
+// const promise = $.ajax(
+//     {
+//         url: 
+//             "http://api.openweathermap.org/data/2.5/weather?q="
+//             +
+//             userInput
+//             +
+//             ",US&APPID="
+//             +
+//             apiKey
+//     }
+// );
 //event handler: first function takes submissions to OpenWeatherMap and calls the second function which renders return
 $("form").on("submit", handleGetData);
 function handleGetData(event) {
     event.preventDefault();
     userInput = $input.val();
-    promise.then(
+    $.ajax(
+        {
+            url: 
+                "http://api.openweathermap.org/data/2.5/weather?q="
+                +
+                userInput
+                +
+                ",US&APPID="
+                +
+                apiKey
+        }
+    ).then(
         (data) => {
             cityData = data;
             console.log("Data: ", data);
-            render();
+            $weatherFor.html(cityData.name);
+            $temp.html(cityData.main.temp * 1.8 - 459.67);
+            $feelsLike.html(cityData.main.feels_like * 1.8 - 459.67);
+            $weather.html(cityData.weather[0].description);
         },
         (error) => {
             console.log("Error: ", error);
         }
     )   
 };
-function render() {
-    $weatherFor.html(cityData.name);
-    $temp.html(cityData.main.temp);
-    $feelsLike.html(cityData.main.feels_like);
-    $weather.html(cityData.weather[0].description);
-};
+// function render() {
+    
+// };
